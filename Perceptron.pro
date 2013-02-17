@@ -14,5 +14,8 @@ HEADERS += \
 
 OTHER_FILES += \
     out.csv \
-    train.csv
+    train.csv \
+    outWeights.csv \
+    InputWeights.csv \
+    hiddenWeights.csv
 

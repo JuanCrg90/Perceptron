@@ -1,9 +1,13 @@
 #include "perceptron.h"
+#include "neuralnet.h"
+
 
 using namespace std;
 
 int main()
 {
+
+/*
     Perceptron a1;
     vector<double> X;
     vector<double> W;
@@ -93,6 +97,16 @@ int main()
     a1.setInput(0.1);
     a1.solve(SIGMOIDAF,LAMBDA);
     a1.showResults();
+*/
+
+    NeuralNet n1;
+    vector<double> xi;
+
+    n1.initNeuralNet(2,2,1);
+    xi.push_back(0.1);
+    xi.push_back(1.0);
+
+    n1.SolveNeuralNet(xi,"InputWeights.csv","hiddenWeights.csv","outWeights.csv");
 
 
 
