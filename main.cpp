@@ -99,14 +99,21 @@ int main()
     a1.showResults();
 */
 
+    Perceptron a1;
     NeuralNet n1;
     vector<double> xi;
+
+    a1.clearFile("outTest.csv");
 
     n1.initNeuralNet(2,2,1);
     xi.push_back(0.1);
     xi.push_back(1.0);
 
-    n1.SolveNeuralNet(xi,"InputWeights.csv","hiddenWeights.csv","outWeights.csv");
+    //n1.SolveNeuralNet(xi,"InputWeights.csv","hiddenWeights.csv","outWeights.csv");
+
+    n1.testNeuralNet("train.csv","InputWeights.csv","hiddenWeights.csv","outWeights.csv");
+    n1.showNetwork();
+
 
 
 
