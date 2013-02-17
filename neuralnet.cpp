@@ -323,6 +323,130 @@ void NeuralNet::testNeuralNet(string examples, string inWeights, string hiddenWe
 }
 
 
+void NeuralNet::showNetwork()
+{
+    cout<<"General information"<<endl;
+    cout<<"-------------------------------------------------------------------------------"<<endl;
+    cout<<"inputs"<<endl;
+    for(unsigned int i=0;i<this->xi.size();i++)
+    {
+        cout<<"x"<<i<<"\t";
+    }
+    cout<<endl;
+    for(unsigned int i=0;i<this->xi.size();i++)
+    {
+        cout<<this->xi[i]<<"\t";
+    }
+    cout<<endl;
+    cout<<"-------------------------------------------------------------------------------"<<endl;
+    cout<<"outputs"<<endl;
+    for(unsigned int i=0;i<this->O.size();i++)
+    {
+        cout<<"O"<<i<<"\t";
+    }
+    cout<<endl;
+    for(unsigned int i=0;i<this->O.size();i++)
+    {
+        cout<<this->O[i]<<"\t";
+    }
+    cout<<endl;
+    cout<<"-------------------------------------------------------------------------------"<<endl;
+    cout<<"Input layer"<<endl;
+    for(unsigned int i=0;i<inLayer.size();i++)
+    {
+
+        inLayer[i].showAll();
+        cout<<endl;
+    }
+    cout<<endl;
+    cout<<"-------------------------------------------------------------------------------"<<endl;
+    cout<<"Hidden layer"<<endl;
+    for(unsigned int i=0;i<hiddenLayer.size();i++)
+    {
+
+        hiddenLayer[i].showAll();
+        cout<<endl;
+    }
+    cout<<endl;
+    cout<<"-------------------------------------------------------------------------------"<<endl;
+    cout<<"output layer"<<endl;
+    for(unsigned int i=0;i<outLayer.size();i++)
+    {
+
+        outLayer[i].showAll();
+        cout<<endl;
+    }    
+
+}
+
+
+void NeuralNet::saveWeights(string in, string hidd, string out)
+{
+    ofstream outIn,outHidd,outOut;
+
+    //Write the Input layer
+    outIn.open(in.c_str());
+
+    if(!outIn.is_open())
+    {
+        cout<<"Unable Open "<<in.c_str();
+        exit(1);
+    }
+
+    for(unsigned int i=0; i<inLayer.size();i++)
+    {
+        for(unsigned int j=0;j<inLayer[i].getWeights().size();j++)
+        {
+            outIn<<inLayer[i].getWeight(j)<<",";
+        }
+        outIn<<inLayer[i].getTheta()<<endl;
+    }
+    outIn.close();
+
+
+    //Write the hidden layer
+    outHidd.open(hidd.c_str());
+
+    if(!outHidd.is_open())
+    {
+        cout<<"Unable Open "<<hidd.c_str();
+        exit(1);
+    }
+
+    for(unsigned int i=0; i<hiddenLayer.size();i++)
+    {
+        for(unsigned int j=0;j<hiddenLayer[i].getWeights().size();j++)
+        {
+            outHidd<<hiddenLayer[i].getWeight(j)<<",";
+        }
+        outHidd<<hiddenLayer[i].getTheta()<<endl;
+    }
+    outHidd.close();
+
+    //Write the output layer
+    outOut.open(out.c_str());
+
+    if(!outOut.is_open())
+    {
+        cout<<"Unable Open "<<out.c_str();
+        exit(1);
+    }
+
+    for(unsigned int i=0; i<outLayer.size();i++)
+    {
+        for(unsigned int j=0;j<outLayer[i].getWeights().size();j++)
+        {
+            outOut<<outLayer[i].getWeight(j)<<",";
+        }
+        outOut<<outLayer[i].getTheta()<<endl;
+    }
+    outOut.close();
+
+
+
+    cout<<"The weights are saved";
+
+}
 
 
 
@@ -387,67 +511,4 @@ void NeuralNet::backPropagationTraining(string name,int it)
 
     }
 }
-
-void NeuralNet::showNetwork()
-{
-    cout<<"General information"<<endl;
-    cout<<"-------------------------------------------------------------------------------"<<endl;
-    cout<<"inputs"<<endl;
-    for(int i=0;i<this->xi.size();i++)
-    {
-        cout<<"x"<<i<<"\t";
-    }
-    cout<<endl;
-    for(int i=0;i<this->xi.size();i++)
-    {
-        cout<<this->xi[i]<<"\t";
-    }
-    cout<<endl;
-    cout<<"-------------------------------------------------------------------------------"<<endl;
-    cout<<"outputs"<<endl;
-    for(int i=0;i<this->O.size();i++)
-    {
-        cout<<"O"<<i<<"\t";
-    }
-    cout<<endl;
-    for(int i=0;i<this->O.size();i++)
-    {
-        cout<<this->O[i]<<"\t";
-    }
-    cout<<endl;
-    cout<<"-------------------------------------------------------------------------------"<<endl;
-    cout<<"Input layer"<<endl;
-    for(int i=0;i<inLayer.size();i++)
-    {
-
-        inLayer[i].showAll();
-        cout<<endl;
-    }
-    cout<<endl;
-    cout<<"-------------------------------------------------------------------------------"<<endl;
-    cout<<"Hidden layer"<<endl;
-    for(int i=0;i<hiddenLayer.size();i++)
-    {
-
-        hiddenLayer[i].showAll();
-        cout<<endl;
-    }
-    cout<<endl;
-    cout<<"-------------------------------------------------------------------------------"<<endl;
-    cout<<"output layer"<<endl;
-    for(int i=0;i<outLayer.size();i++)
-    {
-
-        outLayer[i].showAll();
-        cout<<endl;
-    }
-
-
-
-
-
-
-}
-
-
 

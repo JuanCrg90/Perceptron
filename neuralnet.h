@@ -70,6 +70,7 @@ public:
     * @param string inWeights weights in the input layer, *.csv  file
     * @param string hiddenWeights weights in the hidden layer, *.csv  file
     * @param string outWeights weights in the output layer, *.csv  file
+    * @param string outFile write the results in a file, default outTest.csv
     */
     void testNeuralNet(string examples,string inWeights, string hiddenWeights, string outWeights,string outFile="outTest.csv");
 
@@ -78,6 +79,16 @@ public:
     * @brief Display general info of all the network
     */
     void showNetwork();
+
+
+    /**
+    * @brief save the weights of each layer
+    * @param string in the input layer weights file default inputWeights.csv
+    * @param string hidd the hidden layer weights file default hiddenWeights.csv
+    * @param string out the output layer weights file default outWeights.csv
+    */
+    void saveWeights(string in="inputWeights.csv",string hidd="hiddenWeights.csv", string out="outWeights.csv");
+
 
 
 
