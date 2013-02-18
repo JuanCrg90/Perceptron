@@ -583,7 +583,7 @@ void NeuralNet::backPropagationTraining(string name,int it)
             //output layer
             for(unsigned int i=0;i<outLayer.size();i++)
             {
-                outLayer[i].setDelta((o - this->O[i])*Perceptron::diffSigmoid(LAMBDA,this->O[i]));
+                outLayer[i].setDelta((o - this->O[i])*this->O[i]*(1-this->O[i]));
             }
 
             //hidden layer
@@ -596,7 +596,7 @@ void NeuralNet::backPropagationTraining(string name,int it)
                     sum+=outLayer[j].getDelta()*outLayer[j].getWeight(i);
                 }
 
-                hiddenLayer[i].setDelta(Perceptron::diffSigmoid(LAMBDA,hiddenLayer[i].getO())*sum);
+                hiddenLayer[i].setDelta(hiddenLayer[i].getInput(i)*(1-hiddenLayer[i].getInput(i))*sum);
             }
 
 
@@ -610,9 +610,8 @@ void NeuralNet::backPropagationTraining(string name,int it)
                     sum+=hiddenLayer[j].getDelta()*hiddenLayer[j].getWeight(i);
                 }
 
-                inLayer[i].setDelta(Perceptron::diffSigmoid(LAMBDA,inLayer[i].getO())*sum);
+                inLayer[i].setDelta(inLayer[i].getInput(i)*(1-inLayer[i].getInput(i))*sum);
             }
-
 
 
 
