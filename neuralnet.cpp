@@ -10,41 +10,7 @@ NeuralNet::NeuralNet(int in, int hidden, int out)
     //Init perceptron Layers
     inLayer.resize(in);
     hiddenLayer.resize(hidden);
-    outLayer.resize(out);
-
-    Perceptron a1;
-
-
-
-
-/*
-    //connect inputs with in Layer
-
-    for(unsigned int i=0;inLayer.size();i++)
-    {
-        inLayer[i].setInput(xi);
-    }
-
-    //Connect in layer outputs in hidden Layer inputs
-
-    for(unsigned int i=0;i<inLayer.size();i++)
-    {
-        for(unsigned int j=0;j<hiddenLayer.size();j++)
-        {
-            hiddenLayer[j].setInput(inLayer[i].getO());
-        }
-    }
-
-    //Connect hidden layer outputs in out layer inputs
-
-    for(unsigned int i=0;i<hiddenLayer.size();i++)
-    {
-        for(unsigned int j=0;j<outLayer.size();j++)
-        {
-            outLayer[j].setInput(hiddenLayer[i].getO());
-        }
-    }
-*/
+    outLayer.resize(out);    
 }
 
 
@@ -55,6 +21,33 @@ void NeuralNet::initNeuralNet(int in, int hidden, int out)
     inLayer.resize(in);
     hiddenLayer.resize(hidden);
     outLayer.resize(out);
+}
+
+
+void NeuralNet::setRandomWeights(int inputsNum)
+{
+    // set weights on the Input layer
+
+    for(unsigned int i=0;i<inLayer.size();i++)
+    {
+        inLayer[i].setRandomWeights(inputsNum);
+    }
+
+
+    // set weights on the Hidden Layer
+
+    for(unsigned int i=0;i<hiddenLayer.size();i++)
+    {
+        hiddenLayer[i].setRandomWeights(inLayer.size());
+    }
+
+    // set weights on the Output Layer
+
+    for(unsigned int i=0;i<outLayer.size();i++)
+    {
+        outLayer[i].setRandomWeights(hiddenLayer.size());
+    }
+
 }
 
 
@@ -75,6 +68,7 @@ void NeuralNet::SolveNeuralNet(vector<double> xi, string inWeights,string hidden
     csvOut.loadCsv(outWeights);
 
     this->xi=xi;
+    this->O.clear();
 
 
 
@@ -112,6 +106,24 @@ void NeuralNet::SolveNeuralNet(vector<double> xi, string inWeights,string hidden
 
         outLayer[i].setWeight(w);
         outLayer[i].setTheta(theta);
+    }
+
+
+
+    // clear inputs in all layers
+    for(unsigned int i=0;i<inLayer.size();i++) //input
+    {
+        inLayer[i].clearInputs();
+    }
+
+    for(unsigned int i=0;i<hiddenLayer.size();i++) //hidden
+    {
+        hiddenLayer[i].clearInputs();
+    }
+
+    for(unsigned int i=0;i<outLayer.size();i++) //output
+    {
+        outLayer[i].clearInputs();
     }
 
 
@@ -162,6 +174,82 @@ void NeuralNet::SolveNeuralNet(vector<double> xi, string inWeights,string hidden
     {
         this->O.push_back(outLayer[i].getO());
     }
+
+}
+
+
+void NeuralNet::SolveNeuralNet(vector<double> xi)
+{
+    this->xi=xi;
+    this->O.clear();
+
+
+    // clear inputs in all layers
+    for(unsigned int i=0;i<inLayer.size();i++) //input
+    {
+        inLayer[i].clearInputs();
+    }
+
+    for(unsigned int i=0;i<hiddenLayer.size();i++) //hidden
+    {
+        hiddenLayer[i].clearInputs();
+    }
+
+    for(unsigned int i=0;i<outLayer.size();i++) //output
+    {
+        outLayer[i].clearInputs();
+    }
+
+
+
+    // Set inputs in the input Layer
+    for(unsigned int i=0;i<inLayer.size();i++)
+    {
+        inLayer[i].setInput(this->xi);
+    }
+
+    //Solve input Layer
+    for(unsigned int i=0;i<inLayer.size();i++)
+    {
+        inLayer[i].solve(SIGMOIDAF,LAMBDA);
+    }
+
+    //Connect input layer outs with the hidden Layer inputs
+    for(unsigned i=0;i<hiddenLayer.size();i++)
+    {
+        for(unsigned int j=0;j<inLayer.size();j++)
+        {
+            hiddenLayer[i].setInput(inLayer[j].getO());
+        }
+    }
+
+    //Solve hidden Layer
+    for(unsigned int i=0;i<hiddenLayer.size();i++)
+    {
+        hiddenLayer[i].solve(SIGMOIDAF,LAMBDA);
+    }
+
+    //Connect hidden Layer outs with the output layer inputs
+    for(unsigned i=0;i<outLayer.size();i++)
+    {
+        for(unsigned int j=0;j<hiddenLayer.size();j++)
+        {
+            outLayer[i].setInput(hiddenLayer[j].getO());
+        }
+    }
+
+    //Solve output Layer
+    for(unsigned int i=0;i<outLayer.size();i++)
+    {
+        outLayer[i].solve(SIGMOIDAF,LAMBDA);
+    }
+
+    //copy outputs
+    for(unsigned int i=0;i<outLayer.size();i++)
+    {
+        this->O.push_back(outLayer[i].getO());
+    }
+
 
 }
 
@@ -453,7 +541,6 @@ void NeuralNet::saveWeights(string in, string hidd, string out)
 
 void NeuralNet::backPropagationTraining(string name,int it)
 {
-    Perceptron a;
     CsvHandler csv;
 
     csv.loadCsv(name);
@@ -463,41 +550,23 @@ void NeuralNet::backPropagationTraining(string name,int it)
     double o;
     int k=0;
 
+    double sum=0;
+
+
+
     aux.resize(csv.getNumCols());
     x.resize(csv.getNumCols()-1);
 
 
 
-
-
     // Step 1: Set All weight and node offset to small random values
-
-    // set weights on the Input layer
-
-    for(unsigned int i=0;i<inLayer.size();i++)
-    {
-        inLayer[i].setRandomWeights(csv.getNumCols()-1);
-    }
+    setRandomWeights(csv.getNumCols()-1);
 
 
-    // set weights on the Hidden Layer
 
-    for(unsigned int i=0;i<hiddenLayer.size();i++)
-    {
-        hiddenLayer[i].setRandomWeights(inLayer.size());
-    }
-
-    // set weights on the Output Layer
-
-    for(unsigned int i=0;i<outLayer.size();i++)
-    {
-        outLayer[i].setRandomWeights(hiddenLayer.size());
-    }
 
 
     //Step 2 Present Input and Desired Outputs
-
-
     while(k!=it)
     {
         for(int j=0;j<csv.getNumRows();j++)
@@ -506,9 +575,58 @@ void NeuralNet::backPropagationTraining(string name,int it)
             copy(aux.begin(),aux.end()-1,x.begin());
             o=aux[aux.size()-1];
 
+            //Step 3 Calcule actual Outputs
+            SolveNeuralNet(x);
+
+
+            // Step 4 Calculate the error
+            //output layer
+            for(unsigned int i=0;i<outLayer.size();i++)
+            {
+                outLayer[i].setDelta((o - this->O[i])*Perceptron::diffSigmoid(LAMBDA,this->O[i]));
+            }
+
+            //hidden layer
+            for(unsigned int i=0;i<hiddenLayer.size();i++)
+            {
+                sum=0;
+
+                for(unsigned int j=0;j<outLayer.size();j++)
+                {
+                    sum+=outLayer[j].getDelta()*outLayer[j].getWeight(i);
+                }
+
+                hiddenLayer[i].setDelta(Perceptron::diffSigmoid(LAMBDA,hiddenLayer[i].getO())*sum);
+            }
+
+
+            //input layer
+            for(unsigned int i=0;i<inLayer.size();i++)
+            {
+                sum=0;
+
+                for(unsigned int j=0;j<hiddenLayer.size();j++)
+                {
+                    sum+=hiddenLayer[j].getDelta()*hiddenLayer[j].getWeight(i);
+                }
+
+                inLayer[i].setDelta(Perceptron::diffSigmoid(LAMBDA,inLayer[i].getO())*sum);
+            }
+
+
+
+
+
+
         }
 
 
+
+        k++;
+        //Repeat by going to step 2
     }
 }
+
+
+
 

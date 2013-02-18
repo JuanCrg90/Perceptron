@@ -54,6 +54,14 @@ public:
 
 
     /**
+    * @brief set random weights and bias in all layers
+    * @param int inputsNum is the number of inputs to the input layer
+    */
+    void setRandomWeights(int inputsNum);
+
+
+
+    /**
     * @brief Eval the neural network with the given input, the weights
     * are loaded from a previously saved files
     * @param vector<double> xi inputs vector
@@ -62,6 +70,16 @@ public:
     * @param string outWeights weights in the output layer, *.csv  file
     */
     void SolveNeuralNet(vector<double> xi, string inWeights, string hiddenWeights, string outWeights);
+
+
+
+    /**
+    * @brief Eval the neural network with the given input, the weights
+    * are set random in setRandomWeights method
+    * @param vector<double> xi inputs vector
+    */
+    void SolveNeuralNet(vector<double> xi);
+
 
     /**
     * @brief Test the neural network with the given examples, the weights

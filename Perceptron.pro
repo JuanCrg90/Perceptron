@@ -16,7 +16,7 @@ OTHER_FILES += \
     out.csv \
     train.csv \
     outWeights.csv \
-    InputWeights.csv \
     hiddenWeights.csv \
-    outTest.csv
+    outTest.csv \
+    inputWeights.csv
 
