@@ -44,7 +44,16 @@ class Perceptron
     double theta; /** @brief bias value */
     double y; /** @brief output sum */
     double O; /** @brief output after the activation function*/
+    double delta;
 
+
+
+
+
+
+public:
+    Perceptron();
+    ~Perceptron();
 
     //Funciones de activación
 
@@ -54,7 +63,7 @@ class Perceptron
     * @param x input value
     * @return double
     */
-    double linear(double alpha,double x);
+    static double linear(double alpha,double x);
 
     /**
     * @brief step AF
@@ -63,7 +72,7 @@ class Perceptron
     * @return int
     */
 
-    int step(double offset,double x);
+    static int step(double offset,double x);
 
     /**
     * @brief sigmoid AF $1/(1+exp(-\lambda*y))$;
@@ -71,7 +80,7 @@ class Perceptron
     * @param y input
     * @return double
     */
-    double sigmoid(double lambda,double y);
+    static double sigmoid(double lambda,double y);
 
     /**
     * @brief sigmoid Bipolar AF $2/(1+\exp^(-\lambda*y))-1$;
@@ -80,7 +89,7 @@ class Perceptron
     * @return double
     */
 
-    double sigmoidBip(double lambda,double y);
+    static double sigmoidBip(double lambda,double y);
 
 
     /**
@@ -89,7 +98,7 @@ class Perceptron
     * @param y input
     * @return double
     */
-    double diffSigmoid(double lambda, double y);
+    static double diffSigmoid(double lambda, double y);
 
     /**
     * @brief derivate of sigmoid Bipolar AF $0.5*(1+sigmoidBip(x))(1-sigmoidBip(x))$;
@@ -97,14 +106,8 @@ class Perceptron
     * @param y input
     * @return double
     */
-    double diffSigmoidBip(double lambda, double y);
+    static double diffSigmoidBip(double lambda, double y);
 
-
-
-
-public:
-    Perceptron();
-    ~Perceptron();
 
     //Sets
 
@@ -160,6 +163,13 @@ public:
     void setRandomWeights(int num); //coloca pesos aleatorios igual a la cantitdad dada
 
 
+    /**
+    * @brief set delta value;
+    * @param double delta delta value
+    */
+    void setDelta(double delta);
+
+
     //Gets
 
     /**
@@ -200,6 +210,12 @@ public:
     * @return double
     */
     double getO(); //regresa el valor de O
+
+    /**
+    * @brief get the delta value
+    * @return double
+    */
+    double getDelta();
 
 
 

@@ -7,6 +7,7 @@ Perceptron::Perceptron()
     this->theta=0.0;
     this->y=0.0;
     this->O=-1.0;
+    this->delta=0.0;
 
 }
 
@@ -388,6 +389,16 @@ void Perceptron::trainNeuron(vector<double> x, double O)
         w[i]+=delta[i];
     }
 
+}
+
+void Perceptron::setDelta(double delta)
+{
+    this->delta=delta;
+}
+
+double Perceptron::getDelta()
+{
+    return this->delta;
 }
 
 
