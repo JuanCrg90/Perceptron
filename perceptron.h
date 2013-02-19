@@ -44,7 +44,7 @@ class Perceptron
     double theta; /** @brief bias value */
     double y; /** @brief output sum */
     double O; /** @brief output after the activation function*/
-    double delta;
+    double delta; /** @brief error atribute*/
 
 
 
