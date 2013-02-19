@@ -35,12 +35,27 @@ private:
     */
     vector<Perceptron> outLayer;
 
+    /**
+    * @brief global Error
+    */
+    double globalError;
+
 
 
 public:
     NeuralNet();
     NeuralNet(int in, int hidden, int out);
 
+
+    /**
+    * set Global Error
+    */
+    void setGlobalError(double e);
+
+    /**
+    * get Global Error
+    */
+    double getGlobalError();
 
 
     /**

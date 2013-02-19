@@ -10,9 +10,19 @@ NeuralNet::NeuralNet(int in, int hidden, int out)
     //Init perceptron Layers
     inLayer.resize(in);
     hiddenLayer.resize(hidden);
-    outLayer.resize(out);    
+    outLayer.resize(out);
 }
 
+
+void NeuralNet::setGlobalError(double e)
+{
+    globalError=e;
+}
+
+double NeuralNet::getGlobalError()
+{
+    return globalError;
+}
 
 
 void NeuralNet::initNeuralNet(int in, int hidden, int out)
@@ -545,8 +555,10 @@ void NeuralNet::backPropagationTraining(string name,int it)
 
     csv.loadCsv(name);
 
+
     vector<double> aux;
     vector<double> x;
+    vector<double> auxW; //auxilar for weigths adapt
     double o;
     int k=0;
 
@@ -569,7 +581,7 @@ void NeuralNet::backPropagationTraining(string name,int it)
     //Step 2 Present Input and Desired Outputs
     while(k!=it)
     {
-        for(int j=0;j<csv.getNumRows();j++)
+        for(int j=0;j<csv.getNumRows();j++) //examples
         {
             aux=CsvHandler::toDouble(csv.getRow(j));
             copy(aux.begin(),aux.end()-1,x.begin());
@@ -613,18 +625,89 @@ void NeuralNet::backPropagationTraining(string name,int it)
                 inLayer[i].setDelta(inLayer[i].getInput(i)*(1-inLayer[i].getInput(i))*sum);
             }
 
+            // Step 5 Adapt Weights
+
+            //Out Layer
+            for(unsigned int i=0;i<outLayer.size();i++) //neurone
+            {
+                auxW.clear();
+
+                auxW=outLayer[i].getWeights();
+                for(unsigned int j=0;j<outLayer[i].getInputs().size();j++) //inputs
+                {
+                    auxW[j]+=ALPHA*outLayer[i].getDelta()*outLayer[i].getInput(j);
+                }
+                outLayer[i].setWeight(auxW); //insert the calculate new weights in the neurone
+
+                //adapt bias
+                outLayer[i].setTheta(outLayer[i].getTheta()-ALPHA*outLayer[i].getDelta());
+            }
+
+            //Hidden Layer
+            for(unsigned int i=0;i<hiddenLayer.size();i++) //neurone
+            {
+                auxW.clear();
+
+                auxW=hiddenLayer[i].getWeights();
+                for(unsigned int j=0;j<hiddenLayer[i].getInputs().size();j++) //inputs
+                {
+                    auxW[j]+=ALPHA*hiddenLayer[i].getDelta()*hiddenLayer[i].getInput(j);
+                }
+                hiddenLayer[i].setWeight(auxW); //insert the calculate new weights in the neurone
+
+                //adapt bias
+                hiddenLayer[i].setTheta(hiddenLayer[i].getTheta()-ALPHA*hiddenLayer[i].getDelta());
+            }
+
+            //input layer
+            for(unsigned int i=0;i<inLayer.size();i++) //neurone
+            {
+                auxW.clear();
+
+                auxW=inLayer[i].getWeights();
+                for(unsigned int j=0;j<inLayer[i].getInputs().size();j++) //inputs
+                {
+                    auxW[j]+=ALPHA*inLayer[i].getDelta()*inLayer[i].getInput(j);
+                }
+                inLayer[i].setWeight(auxW); //insert the calculate new weights in the neurone
+
+                //adapt bias
+                inLayer[i].setTheta(inLayer[i].getTheta()-ALPHA*inLayer[i].getDelta());
+            }
 
 
 
+        } //end examples
 
-        }
+        //Step 6, Calculate Global Error
+        sum=0;
+        for(unsigned int i=0;i<outLayer.size();i++)
+            sum+=(outLayer[i].getDelta()*outLayer[i].getDelta());
+
+        for(unsigned int i=0;i<hiddenLayer.size();i++)
+            sum+=(hiddenLayer[i].getDelta()*hiddenLayer[i].getDelta());
+
+        for(unsigned int i=0;i<inLayer.size();i++)
+            sum+=(inLayer[i].getDelta()*inLayer[i].getDelta());
 
 
+        globalError=sum/2;
+
+        cout<<k<<" "<<"Global Error:"<<globalError<<endl;
 
         k++;
+
         //Repeat by going to step 2
     }
+
+    //save Weights
+    saveWeights();
+
 }
+
+
+
+
 
 
 
