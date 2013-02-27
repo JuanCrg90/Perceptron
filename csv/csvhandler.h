@@ -42,6 +42,39 @@ public:
     */
     void loadCsv(string name);
 
+
+    /**
+    * @brief save vector to file
+    * @param vector< vector<string> > data info to save
+    * @param string file name of file
+    */
+    void saveCsv(vector< vector<string> > data, string file="out.csv");
+
+    /**
+    * @brief save vector to file
+    * @param vector< vector<int> > data info to save
+    * @param string file name of file
+    */
+    void saveCsv(vector< vector<int> > data, string file="out.csv");
+
+    /**
+    * @brief save vector to file
+    * @param vector< vector<float> > data info to save
+    * @param string file name of file
+    */
+    void saveCsv(vector< vector<float> > data, string file="out.csv");
+
+    /**
+    * @brief save vector to file
+    * @param vector< vector<double> > data info to save
+    * @param string file name of file
+    */
+    void saveCsv(vector< vector<double> > data, string file="out.csv");
+
+
+
+
+
     /**
     * @brief Display General Info
     */
@@ -93,6 +126,12 @@ public:
     */
     vector<string> getRow(int num);
 
+
+    /**
+    * @brief Clear the object
+    */
+    void clear();
+
     /**
       * @brief convert to vector<double> a vector<string>
       * @param csv vector of strings
@@ -114,6 +153,14 @@ public:
       * @return vector<int>
       */
     static vector<int> toInt(vector<string> csv);
+
+
+
+
+
+
+
+
 
 
 };

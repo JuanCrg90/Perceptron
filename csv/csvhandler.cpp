@@ -35,11 +35,111 @@ void CsvHandler::loadCsv(string name)
 
         rows=data.size();
         cols=data.at(0).size();
-
-
     }
 
     in.close();
+}
+
+void CsvHandler::saveCsv(vector<vector<string> > data, string file)
+{
+    ofstream out;
+    out.open(file.c_str());
+
+
+    if(out.is_open())
+    {
+        for(unsigned int i=0;i<data.size();i++)
+        {
+            for(unsigned int j=0;j<data[i].size();j++)
+            {
+                out<<data[i][j];
+
+                if(j<data[i].size()-1)
+                {
+                    out<<",";
+                }
+
+
+            }
+            out<<endl;
+        }
+    }
+
+}
+
+void CsvHandler::saveCsv(vector<vector<int> > data, string file)
+{
+    ofstream out;
+    out.open(file.c_str());
+
+
+    if(out.is_open())
+    {
+        for(unsigned int i=0;i<data.size();i++)
+        {
+            for(unsigned int j=0;j<data[i].size();j++)
+            {
+                out<<data[i][j];
+
+                if(j<data[i].size()-1)
+                {
+                    out<<",";
+                }
+            }
+            out<<endl;
+        }
+    }
+
+
+}
+
+void CsvHandler::saveCsv(vector<vector<float> > data, string file)
+{
+    ofstream out;
+    out.open(file.c_str());
+
+
+    if(out.is_open())
+    {
+        for(unsigned int i=0;i<data.size();i++)
+        {
+            for(unsigned int j=0;j<data[i].size();j++)
+            {
+                out<<data[i][j];
+
+                if(j<data[i].size()-1)
+                {
+                    out<<",";
+                }
+            }
+            out<<endl;
+        }
+    }
+
+}
+
+void CsvHandler::saveCsv(vector<vector<double> > data, string file)
+{
+    ofstream out;
+    out.open(file.c_str());
+
+
+    if(out.is_open())
+    {
+        for(unsigned int i=0;i<data.size();i++)
+        {
+            for(unsigned int j=0;j<data[i].size();j++)
+            {
+                out<<data[i][j];
+
+                if(j<data[i].size()-1)
+                {
+                    out<<",";
+                }
+            }
+            out<<endl;
+        }
+    }
 
 }
 
@@ -120,6 +220,13 @@ vector<string> CsvHandler::getRow(int num)
 
     return rowSel;
 
+}
+
+void CsvHandler::clear()
+{
+    rows=0;
+    cols=0;
+    data.clear();
 }
 
 vector<double> CsvHandler::toDouble(vector<string> csv)
