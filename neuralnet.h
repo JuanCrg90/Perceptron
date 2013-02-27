@@ -57,7 +57,6 @@ public:
     */
     double getGlobalError();
 
-
     /**
     * @brief Init num of neurones in each layer
     * @param int in number of neurones on the input layer
@@ -66,15 +65,11 @@ public:
     */
     void initNeuralNet(int in,int hidden, int out);
 
-
-
     /**
     * @brief set random weights and bias in all layers
     * @param int inputsNum is the number of inputs to the input layer
     */
     void setRandomWeights(int inputsNum);
-
-
 
     /**
     * @brief Eval the neural network with the given input, the weights
@@ -86,15 +81,12 @@ public:
     */
     void SolveNeuralNet(vector<double> xi, string inWeights, string hiddenWeights, string outWeights);
 
-
-
     /**
     * @brief Eval the neural network with the given input, the weights
     * are set random in setRandomWeights method
     * @param vector<double> xi inputs vector
     */
     void SolveNeuralNet(vector<double> xi);
-
 
     /**
     * @brief Test the neural network with the given examples, the weights
@@ -105,14 +97,12 @@ public:
     * @param string outWeights weights in the output layer, *.csv  file
     * @param string outFile write the results in a file, default outTest.csv
     */
-    void testNeuralNet(string examples,string inWeights, string hiddenWeights, string outWeights,string outFile="outTest.csv");
-
+    void testNeuralNet(string examples,string inWeights, string hiddenWeights, string outWeights,string outFile="./datasets/outTest.csv");
 
     /**
     * @brief Display general info of all the network
     */
     void showNetwork();
-
 
     /**
     * @brief save the weights of each layer
@@ -120,12 +110,7 @@ public:
     * @param string hidd the hidden layer weights file default hiddenWeights.csv
     * @param string out the output layer weights file default outWeights.csv
     */
-    void saveWeights(string in="inputWeights.csv",string hidd="hiddenWeights.csv", string out="outWeights.csv");
-
-
-
-
-
+    void saveWeights(string in="./datasets/inputWeights.csv",string hidd="./datasets/hiddenWeights.csv", string out="./datasets/outWeights.csv");
 
 
     /**
@@ -134,23 +119,6 @@ public:
     * @param int it Number of iterations
     */
     void backPropagationTraining(string name, int it);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 };
 

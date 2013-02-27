@@ -93,7 +93,6 @@ void NeuralNet::SolveNeuralNet(vector<double> xi, string inWeights,string hidden
 
         inLayer[i].setWeight(w);
         inLayer[i].setTheta(theta);
-
     }
 
     //Hidden Layer
@@ -473,7 +472,7 @@ void NeuralNet::showNetwork()
 
         outLayer[i].showAll();
         cout<<endl;
-    }    
+    }
 
 }
 
@@ -564,17 +563,16 @@ void NeuralNet::backPropagationTraining(string name,int it)
 
     double sum=0;
 
+    double gError=0.0;
+    double outGError=0.0;
 
 
     aux.resize(csv.getNumCols());
     x.resize(csv.getNumCols()-1);
 
 
-
     // Step 1: Set All weight and node offset to small random values
     setRandomWeights(csv.getNumCols()-1);
-
-
 
 
 
@@ -595,7 +593,10 @@ void NeuralNet::backPropagationTraining(string name,int it)
             //output layer
             for(unsigned int i=0;i<outLayer.size();i++)
             {
-                outLayer[i].setDelta((o - this->O[i])*this->O[i]*(1-this->O[i]));
+                gError=o - this->O[i];
+                outLayer[i].setDelta((gError)*this->O[i]*(1-this->O[i]));
+                globalError+=gError;
+                gError=0.0;
             }
 
             //hidden layer
@@ -608,7 +609,7 @@ void NeuralNet::backPropagationTraining(string name,int it)
                     sum+=outLayer[j].getDelta()*outLayer[j].getWeight(i);
                 }
 
-                hiddenLayer[i].setDelta(hiddenLayer[i].getInput(i)*(1-hiddenLayer[i].getInput(i))*sum);
+                hiddenLayer[i].setDelta(hiddenLayer[i].getO()*(1-hiddenLayer[i].getO())*sum);
             }
 
 
@@ -622,7 +623,7 @@ void NeuralNet::backPropagationTraining(string name,int it)
                     sum+=hiddenLayer[j].getDelta()*hiddenLayer[j].getWeight(i);
                 }
 
-                inLayer[i].setDelta(inLayer[i].getInput(i)*(1-inLayer[i].getInput(i))*sum);
+                inLayer[i].setDelta(inLayer[i].getO()*(1-inLayer[i].getO())*sum);
             }
 
             // Step 5 Adapt Weights
@@ -680,20 +681,12 @@ void NeuralNet::backPropagationTraining(string name,int it)
         } //end examples
 
         //Step 6, Calculate Global Error
-        sum=0;
-        for(unsigned int i=0;i<outLayer.size();i++)
-            sum+=(outLayer[i].getDelta()*outLayer[i].getDelta());
 
-        for(unsigned int i=0;i<hiddenLayer.size();i++)
-            sum+=(hiddenLayer[i].getDelta()*hiddenLayer[i].getDelta());
-
-        for(unsigned int i=0;i<inLayer.size();i++)
-            sum+=(inLayer[i].getDelta()*inLayer[i].getDelta());
-
-
-        globalError=sum/2;
-
-        cout<<k<<" "<<"Global Error:"<<globalError<<endl;
+        for(unsigned int i=0;i<this->O.size();i++)
+        {            
+            cout<<k<<" "<<"Global Error:"<<globalError<<endl;
+        }
+        globalError=0.0;
 
         k++;
 
@@ -704,11 +697,3 @@ void NeuralNet::backPropagationTraining(string name,int it)
     saveWeights();
 
 }
-
-
-
-
-
-
-
-
