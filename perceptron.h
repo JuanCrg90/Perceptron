@@ -28,7 +28,7 @@ using namespace std;
 #define SIGMOIDAF 2
 #define SIGMOIDBIPAF 3
 
-#define ALPHA 0.2f
+#define ALPHA 0.5f
 #define LAMBDA 1.0
 
 

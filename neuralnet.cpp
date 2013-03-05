@@ -563,8 +563,7 @@ void NeuralNet::backPropagationTraining(string name,int it)
 
     double sum=0;
 
-    double gError=0.0;
-    double outGError=0.0;
+    double gError=0.0;    
 
 
     aux.resize(csv.getNumCols());
@@ -583,7 +582,7 @@ void NeuralNet::backPropagationTraining(string name,int it)
         {
             aux=CsvHandler::toDouble(csv.getRow(j));
             copy(aux.begin(),aux.end()-1,x.begin());
-            o=aux[aux.size()-1];
+            o=aux[aux.size()-1]; //valor esperado
 
             //Step 3 Calcule actual Outputs
             SolveNeuralNet(x);
@@ -690,10 +689,61 @@ void NeuralNet::backPropagationTraining(string name,int it)
 
         k++;
 
+        if(k%50==0)
+        {
+            cout<<"checkPoint"<< endl;
+            //save Weights
+            saveWeights();
+
+        }
+
         //Repeat by going to step 2
+
+
+
     }
 
     //save Weights
     saveWeights();
+
+}
+
+void NeuralNet::umbralize(string in,string out,int x)
+{
+    CsvHandler csv;
+    vector< vector<double> > conv;
+
+    csv.loadCsv(in);
+
+    //alloc
+    conv.resize(csv.getNumRows());
+    for(unsigned int i=0;i<conv.size();i++)
+    {
+        conv[i].resize(csv.getNumCols());
+    }
+
+    //copy
+    for(unsigned int i=0;i<conv.size();i++)
+    {
+        conv[i]=CsvHandler::toDouble(csv.getRow(i));
+    }
+
+    //umbralize
+    for(unsigned int i=0;i<conv.size();i++)
+    {
+        for(unsigned int j=0;j<conv[0].size()-1;j++)
+        {
+            if(conv[i][j]>=x)
+            {
+                conv[i][j]=1;
+            }
+            else
+            {
+                conv[i][j]=0;
+            }
+        }
+    }
+
+    csv.saveCsv(conv,out);
 
 }

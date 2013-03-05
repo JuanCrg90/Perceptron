@@ -2,12 +2,15 @@
 
 Perceptron::Perceptron()
 {
+    srand(time(NULL));
+
     this->x.clear();
     this->w.clear();
     this->theta=0.0;
     this->y=0.0;
     this->O=-1.0;
     this->delta=0.0;
+
 
 }
 
@@ -75,7 +78,7 @@ void Perceptron::setPerceptron(vector<double> xi, vector<double> wi, double thet
 
 void Perceptron::setRandomWeights(int num)
 {
-    srand(time(NULL));
+
 
     for(int i=0;i<num;i++)
     {

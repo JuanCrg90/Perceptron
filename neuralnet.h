@@ -1,7 +1,7 @@
 #ifndef NEURALNET_H
 #define NEURALNET_H
 
-#include <perceptron.h>
+#include "perceptron.h"
 
 
 class NeuralNet
@@ -120,6 +120,13 @@ public:
     */
     void backPropagationTraining(string name, int it);
 
+    /**
+    * @brief umbralize the given dataset
+    * @brief if x==100 y =1
+    * @brief else y=0
+    */
+
+    void umbralize(string in, string out="./datasets/umbralOut.csv", int x=100);
 };
 
 #endif // NEURALNET_H
