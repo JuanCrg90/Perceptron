@@ -13,10 +13,12 @@ HEADERS += \
     neuralnet.h
 
 OTHER_FILES += \
-    out.csv \
-    train.csv \
-    outWeights.csv \
-    hiddenWeights.csv \
-    outTest.csv \
-    inputWeights.csv
+    datasets/hiddenWeights.csv \
+    datasets/inputWeights.csv \
+    datasets/outTest.csv \
+    datasets/outWeights.csv \
+    datasets/train.csv \
+    datasets/trainC.csv \
+    datasets/plotData.m \
+    datasets/loadTest.m
 
